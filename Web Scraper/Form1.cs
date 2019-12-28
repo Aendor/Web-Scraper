@@ -1,4 +1,7 @@
-﻿using AngleSharp.Dom;
+﻿//private string siteUrl = "https://www.oceannetworks.ca/news/stories";
+//public string[] QueryTerms { get; } = { "Ocean", "Nature", "Pollution" };
+
+using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using AngleSharp.Text;
@@ -17,19 +20,24 @@ namespace Web_Scraper
     {
         private string Title { get; set; }
         private string Url { get; set; }
-        private string siteUrl = "https://www.oceannetworks.ca/news/stories";
-        public string[] QueryTerms { get; } = { "Ocean", "Nature", "Pollution" };
-
+        private string siteUrl;
+        public string[] QueryTerms;
         public Form1()
         {
             InitializeComponent();
         }
         private void Button_Click(object sender, EventArgs e)
         {
+            siteUrl = txb_Website.Text;
+            QueryTerms = txb_SearchTerms.Text.Split(',');
+
             ScrapeWebsite();
         }
+
         internal async void ScrapeWebsite()
         {
+            FromIsEnabled(false);
+
             CancellationTokenSource cancellationToken = new CancellationTokenSource();
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage request = await httpClient.GetAsync(siteUrl);
@@ -43,6 +51,16 @@ namespace Web_Scraper
 
             //Add connection between initial scrape, and parsing of results
             GetScrapeResults(document);
+
+            FromIsEnabled(true);
+        }
+
+        private void FromIsEnabled(bool setting)
+        {
+            button1.Enabled = setting;
+            txb_Website.Enabled = setting;
+            txb_SearchTerms.Enabled = setting;
+            rtb_debugDisplay.Enabled = setting;
         }
 
         private void GetScrapeResults(IHtmlDocument document)
@@ -66,6 +84,8 @@ namespace Web_Scraper
 
         public void PrintResults(IEnumerable<IElement> articleLink)
         {
+            rtb_debugDisplay.Clear();
+
             //Every element needs to be cleaned and displayed
             foreach (var element in articleLink)
             {
