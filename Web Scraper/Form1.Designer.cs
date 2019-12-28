@@ -46,6 +46,7 @@
             this.rtb_debugDisplay.Size = new System.Drawing.Size(776, 329);
             this.rtb_debugDisplay.TabIndex = 0;
             this.rtb_debugDisplay.Text = "";
+            this.rtb_debugDisplay.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.rtb_debugDisplay_LinkClicked);
             // 
             // button1
             // 

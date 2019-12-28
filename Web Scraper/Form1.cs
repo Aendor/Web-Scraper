@@ -8,6 +8,7 @@ using AngleSharp.Text;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -32,6 +33,11 @@ namespace Web_Scraper
             QueryTerms = txb_SearchTerms.Text.Split(',');
 
             ScrapeWebsite();
+        }
+
+        private void mRichTextBox_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText);
         }
 
         internal async void ScrapeWebsite()
@@ -111,6 +117,11 @@ namespace Web_Scraper
             string[] splitResults = htmlResult.Split('*');
             Url = splitResults[0];
             Title = splitResults[1];
+        }
+
+        private void rtb_debugDisplay_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            Process.Start(e.LinkText);
         }
     }
 }
